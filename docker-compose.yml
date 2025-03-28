@@ -3,26 +3,27 @@ version: "3.8"
 services:
   # Service pour l'application FastAPI
   web:
-    build: .
+    build:
+      context: .  # Utiliser le répertoire courant pour le Dockerfile
     container_name: message_app
     ports:
       - "8000:8000"  # Redirige le port 8000 du conteneur vers le port 8000 de ta machine
     depends_on:
       - redis  # Le service web dépend de Redis
     environment:
-      - REDIS_HOST=redis  
-      - REDIS_PORT=6379   # Le port sur lequel Redis écoute (6379)
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     volumes:
-      - .:/app  # Monte le répertoire de travail local dans le conteneur
+      - .:/app  # Monte tout le répertoire de travail local dans le conteneur
 
   # Service Redis
   redis:
     image: redis:alpine  # Utilise l'image officielle de Redis
     container_name: redis
     ports:
-      - "6379:6379"  # Redirige le port 6379 de Redis
+      - "6379:6379"  # Port de Redis
     volumes:
-      - redis_data:/data  # Persister les données Redis (volumes)
+      - redis_data:/data  # Permet de persister les données Redis
 
 # Définir le volume pour persister les données de Redis
 volumes:
